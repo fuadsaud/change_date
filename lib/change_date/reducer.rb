@@ -18,7 +18,7 @@ module ChangeDate
     end
 
     def days_to_minutes(month:, days:)
-      (MONTHS[month].first + (days - 2)) * MINUTES_IN_ONE_DAY
+      (MONTHS[month].first + (days - 1)) * MINUTES_IN_ONE_DAY
     end
 
     def hours_to_minutes(hours)

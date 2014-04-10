@@ -11,12 +11,12 @@ module ChangeDate
       days, remaining_minutes = remaining_minutes.divmod(MINUTES_IN_ONE_DAY)
       hour, remaining_minutes = remaining_minutes.divmod(MINUTES_IN_ONE_HOUR)
 
-      month_number, month_range = find_month_for(day_of_the_year: days + 2)
+      month_number, month_range = find_month_for(day_of_the_year: days + 1)
 
       {
         year:   year + 1,
         month:  month_number,
-        day:    days - month_range.first + 2,
+        day:    days - month_range.first + 1,
         hour:   hour,
         minute: remaining_minutes,
       }
