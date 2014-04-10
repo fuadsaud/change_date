@@ -1,5 +1,9 @@
+require_relative 'constants'
+
 module ChangeDate
   class Parser
+    include Constants
+
     BadDateFormatError = Class.new(StandardError)
 
     MONTH_RANGE  = 1..12
@@ -18,15 +22,17 @@ module ChangeDate
     private
 
     def match(date_string)
-      PATTERN.match(date_string) do |match|
-        {
-          year:   match[:year].to_i,
-          month:  match[:month].to_i,
-          day:    match[:day].to_i,
-          hour:   match[:hour].to_i,
-          minute: match[:minute].to_i,
-        }
-      end
+      ensure! {
+        PATTERN.match(date_string) do |match|
+          {
+            year:   match[:year].to_i,
+            month:  match[:month].to_i,
+            day:    match[:day].to_i,
+            hour:   match[:hour].to_i,
+            minute: match[:minute].to_i,
+          }
+        end
+      }
     end
 
     def validate_date_parts!(year:, month:, day:, hour:, minute:)
@@ -37,24 +43,32 @@ module ChangeDate
         validate_minute!(minute)
     end
 
-    def validate_day!(day, month:)
-      fail BadDateFormatError unless ChangeDate::MONTHS[month].cover?(day)
+    def validate_year!(year)
+      ensure! { year > 0 }
     end
 
     def validate_month!(month)
-      fail BadDateFormatError unless MONTH_RANGE.cover?(month)
+      ensure! { MONTH_RANGE.cover?(month) }
     end
 
-    def validate_year!(year)
-      fail BadDateFormatError unless year > 0
+    def validate_day!(day, month:)
+    ensure! {
+      range = MONTHS[month]
+
+      range.cover?(range.first + day - 1)
+    }
     end
 
     def validate_hour!(hour)
-      fail BadDateFormatError unless HOUR_RANGE.cover?(hour)
+      ensure! { HOUR_RANGE.cover?(hour) }
     end
 
     def validate_minute!(minute)
-      fail BadDateFormatError unless MINUTE_RANGE.cover?(minute)
+      ensure! { MINUTE_RANGE.cover?(minute) }
+    end
+
+    def ensure!(&block)
+      block.call or fail BadDateFormatError
     end
   end
 end

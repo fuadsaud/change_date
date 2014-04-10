@@ -1,7 +1,7 @@
 require_relative '../../lib/change_date/splatter'
 
 describe ChangeDate::Splatter do
-  describe 'splat' do
+  describe '#splat' do
     subject { described_class.new }
 
     let(:minutes) { 1_056_016_740 }
@@ -14,7 +14,7 @@ describe ChangeDate::Splatter do
       minute:    0,
     } }
 
-    it 'returns a date when inputted an amount' do
+    it 'returns a date when given an amount of minutes' do
       expect(subject.splat(minutes)).to eq date
     end
   end

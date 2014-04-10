@@ -14,7 +14,15 @@ module ChangeDate
     end
 
     def sub(base:, value:)
-      base - value
+      with_valid_args(base: base, value: value) do |base, value|
+        base - value
+      end
+    end
+
+    def with_valid_args(base:, value:)
+      fail ArgumentError if value > base
+
+      yield base, value
     end
   end
 end

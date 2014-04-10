@@ -1,4 +1,5 @@
 require_relative 'constants'
+
 module ChangeDate
   class Reducer
     include Constants
