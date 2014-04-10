@@ -18,11 +18,15 @@ module ChangeDate
     end
 
     def days_to_minutes(month:, days:)
-      (MONTHS[month].first + (days - 1)) * MINUTES_IN_ONE_DAY
+      day_of_the_year(month: month, day: days) * MINUTES_IN_ONE_DAY
     end
 
     def hours_to_minutes(hours)
       hours * MINUTES_IN_ONE_HOUR
+    end
+
+    def day_of_the_year(month:, day:)
+      MONTHS[month].first + day - 1
     end
   end
 end
